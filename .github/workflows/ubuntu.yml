@@ -1,0 +1,26 @@
+name: Ubuntu
+on: [push]
+jobs:
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install library with apt
+        run: sudo apt-get install cmake libhts-dev libtbb-dev -y
+      - uses: actions/checkout@v1
+      - name: Configure
+        run: mkdir build && cd build && cmake .. -DINCLUDE_LIBRARY_PREFIX=/usr/include -DLIBRARY_LINK_PREFIX=/usr/lib/x86_64-linux-gnu -DBUILD_TESTS=ON
+      - name: Build
+        run: cd build && make
+      - name: Testing
+        run: cd build && ctest --verbose
+      - name: Install
+        run: cd build && sudo make install
+      - name: Run
+        run: iprins
+      - name: Upload artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: iprins_linux_x86_64bit
+          path: /usr/local/bin/iprins
