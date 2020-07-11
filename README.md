@@ -27,7 +27,7 @@ make install
 
 ## Usage
 ```sh
-iprins call -b (aligment) -t (number of threads) -r (reference) -o (output)
+iprins call -b (aligment) -r (reference) -o (output)
 ```
 
 

@@ -392,7 +392,7 @@ int SplitRead::writeFile(Evidence vr)
 {
     std::ofstream myfile;
     myfile.open(filepath->getOutputPath() + "/analysis/splitread/" + vr.getChr() + "." + vr.getVariantType() + ".txt", std::ios_base::app);
-    vr.setID("iPRIns" + std::to_string(vcfIdNumber));
+    vr.setID("IPRINS" + std::to_string(vcfIdNumber));
     myfile << vr.getResultVcfFormatString() << std::endl;
     vcfIdNumber++;
     myfile.close();

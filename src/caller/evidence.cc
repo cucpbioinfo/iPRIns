@@ -386,7 +386,7 @@ void Evidence::setEvidenceByString(std::string line)
                     setEndChr(getValuebyText(ainfo));
                     continue;
                 }
-                else if (getKeybyText(ainfo) == "iPRIns_MQL")
+                else if (getKeybyText(ainfo) == "IPRINS_MQL")
                 {
                     std::string pv_BMQL = getValuebyText(ainfo);
                     std::vector<std::string> nineSection = split(getValuebyText(ainfo), ',');
@@ -397,7 +397,7 @@ void Evidence::setEvidenceByString(std::string line)
                     }
                     continue;
                 }
-                else if (getKeybyText(ainfo) == "iPRIns_RPMQL")
+                else if (getKeybyText(ainfo) == "IPRINS_RPMQL")
                 {
                     std::string pv_BMQL = getValuebyText(ainfo);
                     std::vector<std::string> nineSection = split(getValuebyText(ainfo), ',');
@@ -408,7 +408,7 @@ void Evidence::setEvidenceByString(std::string line)
                     }
                     continue;
                 }
-                else if (getKeybyText(ainfo) == "iPRIns_POS_DR")
+                else if (getKeybyText(ainfo) == "IPRINS_POS_DR")
                 {
                     std::string pv_BMQL = getValuebyText(ainfo);
                     std::vector<std::string> nineSection = split(getValuebyText(ainfo), ',');
@@ -416,7 +416,7 @@ void Evidence::setEvidenceByString(std::string line)
                     setLastPosDiscordantRead(std::stol(nineSection.at(1), nullptr, 0));
                     continue;
                 }
-                else if (getKeybyText(ainfo) == "iPRIns_END_DR")
+                else if (getKeybyText(ainfo) == "IPRINS_END_DR")
                 {
                     std::string pv_BMQL = getValuebyText(ainfo);
                     std::vector<std::string> nineSection = split(getValuebyText(ainfo), ',');
@@ -425,25 +425,25 @@ void Evidence::setEvidenceByString(std::string line)
                     continue;
                 }
  
-                else if (getKeybyText(ainfo) == "iPRIns_LNGMATCH")
+                else if (getKeybyText(ainfo) == "IPRINS_LNGMATCH")
                 {
                     LNGMATCH = atoi(getValuebyText(ainfo).c_str());
                     continue;
                 }
 
-                else if (getKeybyText(ainfo) == "iPRIns_FREQ")
+                else if (getKeybyText(ainfo) == "IPRINS_FREQ")
                 {
                     setFrequency(atoi(getValuebyText(ainfo).c_str()));
                     continue;
                 }
 
-                else if (getKeybyText(ainfo) == "iPRIns_MARK")
+                else if (getKeybyText(ainfo) == "IPRINS_MARK")
                 {
                     setMark(getValuebyText(ainfo));
                     continue;
                 }
 
-                else if (getKeybyText(ainfo) == "iPRIns_SA")
+                else if (getKeybyText(ainfo) == "IPRINS_SA")
                 {
                     std::vector<std::string> nineSection = split(getValuebyText(ainfo), ',');
                     for (auto m : nineSection)
@@ -457,7 +457,7 @@ void Evidence::setEvidenceByString(std::string line)
                     continue;
                 }
 
-                else if (getKeybyText(ainfo) == "iPRIns_EPOS")
+                else if (getKeybyText(ainfo) == "IPRINS_EPOS")
                 {
                     evidencefrom = std::stol(getValuebyText(ainfo), nullptr, 0);
                     continue;
@@ -528,17 +528,17 @@ std::string Evidence::getInfoString()
     // }
     if (getFrequency() != 0)
     {
-        result.append("iPRIns_FREQ=" + std::to_string(getFrequency()) + ";");
+        result.append("IPRINS_FREQ=" + std::to_string(getFrequency()) + ";");
     }
-    result.append("iPRIns_LNGMATCH=" + std::to_string(LNGMATCH) + ";");
-    result.append("iPRIns_MQL=" + convertMapQlistToCommaString(getMapQVector()) + ";");
+    result.append("IPRINS_LNGMATCH=" + std::to_string(LNGMATCH) + ";");
+    result.append("IPRINS_MQL=" + convertMapQlistToCommaString(getMapQVector()) + ";");
     if (getMark() != "")
     {
-        result.append("iPRIns_MARK=" + getMark() + ";");
+        result.append("IPRINS_MARK=" + getMark() + ";");
     }
     if (getRPMapQ()->size() != 0)
     {
-        result.append("iPRIns_RPMQL=" + convertMapQlistToCommaString(getRPMapQ()) + ";");
+        result.append("IPRINS_RPMQL=" + convertMapQlistToCommaString(getRPMapQ()) + ";");
     }
 
     if (getCiPosLeft() != 0 || getCiPosRight() != 0)
@@ -552,17 +552,17 @@ std::string Evidence::getInfoString()
 
     if (getPosDiscordantRead() != 0 || getLastPosDiscordantRead() != 0)
     {
-        result.append("iPRIns_POS_DR=" + std::to_string(getPosDiscordantRead()) + "," + std::to_string(getLastPosDiscordantRead()) + ";");
+        result.append("IPRINS_POS_DR=" + std::to_string(getPosDiscordantRead()) + "," + std::to_string(getLastPosDiscordantRead()) + ";");
     }
 
     if (getEndDiscordantRead() != 0 || getLastEndDiscordantRead() != 0)
     {
-        result.append("iPRIns_END_DR=" + std::to_string(getEndDiscordantRead()) + "," + std::to_string(getLastEndDiscordantRead()) + ";");
+        result.append("IPRINS_END_DR=" + std::to_string(getEndDiscordantRead()) + "," + std::to_string(getLastEndDiscordantRead()) + ";");
     }
 
     if (AltSA.size() != 0)
     {
-        result.append("iPRIns_SA=");
+        result.append("IPRINS_SA=");
         bool first = true;
         for (auto n : AltSA)
         {
@@ -578,7 +578,7 @@ std::string Evidence::getInfoString()
 
     if (evidencefrom != 0)
     {
-        result.append("iPRIns_EPOS=" + std::to_string(evidencefrom) + ";");
+        result.append("IPRINS_EPOS=" + std::to_string(evidencefrom) + ";");
     }
 
     return result;
@@ -806,20 +806,20 @@ std::string Evidence::convertToVcfString()
     buf.append("CIPOS=" + std::to_string(getCiPosLeft()) + "," + std::to_string(getCiPosRight()) + ";");
     buf.append("CIEND=" + std::to_string(getCiEndLeft()) + "," + std::to_string(getCiEndRight()) + ";");
     buf.append("CHR2=" + getEndChr() + ";");
-    buf.append("iPRIns_MQL=" + convertMapQlistToCommaString(getMapQVector()) + ";");
-    buf.append("iPRIns_POS_DR=" + std::to_string(getPosDiscordantRead()) + "," + std::to_string(getLastPosDiscordantRead()) + ";");
-    buf.append("iPRIns_END_DR=" + std::to_string(getEndDiscordantRead()) + "," + std::to_string(getLastEndDiscordantRead()) + ";");
+    buf.append("IPRINS_MQL=" + convertMapQlistToCommaString(getMapQVector()) + ";");
+    buf.append("IPRINS_POS_DR=" + std::to_string(getPosDiscordantRead()) + "," + std::to_string(getLastPosDiscordantRead()) + ";");
+    buf.append("IPRINS_END_DR=" + std::to_string(getEndDiscordantRead()) + "," + std::to_string(getLastEndDiscordantRead()) + ";");
     if (getMark() != "")
     {
-        buf.append("iPRIns_MARK=" + getMark() + ";");
+        buf.append("IPRINS_MARK=" + getMark() + ";");
     }
     if (getFrequency() != 0)
     {
-        buf.append("iPRIns_FREQ=" + std::to_string(getFrequency()) + ";");
+        buf.append("IPRINS_FREQ=" + std::to_string(getFrequency()) + ";");
     }
     if (rpmapqlist.size() != 0)
     {
-        buf.append("iPRIns_RPMQL=" + convertMapQlistToCommaString(&rpmapqlist) + ";");
+        buf.append("IPRINS_RPMQL=" + convertMapQlistToCommaString(&rpmapqlist) + ";");
     }
 
     return buf;

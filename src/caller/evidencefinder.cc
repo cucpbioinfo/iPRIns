@@ -164,7 +164,7 @@ void EvidenceFinder::findEvidence()
     rdh.setRange(250);
     rdh.setReadDepthMap(ReadDepthLineSegment);
     rdh.setTargetChromosome(*target_chromosome);
-//    rdh.writeReadDepthLineFile(filepath->getReadDepthPath() + "/" + *target_chromosome + ".txt");
+    rdh.writeReadDepthLineFile(filepath->getReadDepthPath() + "/" + *target_chromosome + ".txt");
     rdh.findEvidence();
     rdh.calculateAvgReaddepth();
     rdh.writeReadDepthStat(filepath->getReadDepthStatPath());

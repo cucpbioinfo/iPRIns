@@ -32,15 +32,16 @@ void RefiningInsertion::execute()
 
 void RefiningInsertion::first()
 {
-    std::string findRange = convertRangeToString(evidence.getChr(), evidence.getPos() + evidence.getCiPosLeft(),
-                                                 evidence.getPos() + evidence.getCiPosRight());
+    std::string findRange = convertRangeToString(evidence.getChr(), evidence.getPos()+evidence.getCiPosLeft(),
+                                                 evidence.getEnd()+evidence.getCiEndRight());
 
-    if (evidence.getPos() + evidence.getCiPosRight() - evidence.getPos() - evidence.getCiPosLeft() < 150)
-    {
-        return;
-    }
+//    if (evidence.getPos() + evidence.getCiPosRight() - evidence.getPos() - evidence.getCiPosLeft() < 150)
+//    {
+//        return;
+//    }
 
-    // std::cout << "findRange : " << findRange << " " << evidence.getPos() + evidence.getCiPosLeft() - (evidence.getPos() + evidence.getCiPosRight()) << std::endl;
+//     std::cout << "findRange : " << findRange << "\n" << evidence.getPos() + evidence.getCiPosLeft() - (evidence.getPos() + evidence.getCiPosRight()) << std::endl;
+//    std::cout << ">>> : " << " " <<  evidence.getPos() << "," << readparser.getLengthSequence() << "," << evidence.getEnd() << "," << readparser.getLengthSequence() << std::endl;
 
     const char *range = findRange.c_str();
     refineStartToEnd(range);
@@ -53,7 +54,7 @@ void RefiningInsertion::first()
     if (variantresult.isQuailtyPass() == false && evidence.getMark() != "MATEUNMAPPED")
     {
         evidence.setMark("UNMERGE");
-        RefiningInsertion::findBreakpoint();
+        RefiningInsertion::findUnmergeBreakpoint();
         RefiningInsertion::filterBreakpoint();
     }
 }
@@ -161,6 +162,24 @@ void RefiningInsertion::filterBreakpoint()
     for (BreakpointPosition n : vectorBP)
     {
 
+        if (evidence.getMark() == "UNMERGE" && n.frequency >= 3)
+        {
+
+            variantresult.setPos(n.pos);
+            variantresult.setEnd(n.end);
+            variantresult.setFrequency(n.frequency);
+            variantresult.setRPMapQ(*evidence.getMapQVector());
+            variantresult.LNGMATCH = n.longmatch;
+
+            variantresult.setMapQList(n.mappingqualitylist);
+            variantresult.setChr(evidence.getChr());
+            variantresult.setEndChr(evidence.getEndChr());
+            variantresult.setQuailtyPass(true);
+            variantresult.setMark(evidence.getMark());
+
+            continue;
+        }
+
         int32_t averagePos = 0;
         if (n.pos > n.end)
         {
@@ -262,6 +281,69 @@ void RefiningInsertion::filterBreakpoint()
     }
 }
 
+
+void RefiningInsertion::findUnmergeBreakpoint()
+{
+    vectorBP.clear();
+    BreakpointPosition tempBP;
+    tempBP.pos = (evidence.getPosDiscordantRead()+evidence.getLastPosDiscordantRead())/2;
+    tempBP.end = (evidence.getPosDiscordantRead()+evidence.getLastPosDiscordantRead())/2;
+    tempBP.frequency = evidence.getMapQVector()->size();
+    tempBP.mappingqualitylist = *evidence.getMapQVector();
+    vectorBP.push_back(tempBP);
+
+//    if (tempBP.frequency <= 4)
+//    {
+//        continue;
+//    }
+//
+//    added = true;
+//    vectorBP.push_back(tempBP);
+//
+//
+//    added = true;
+//    vectorBP.push_back(tempBP)
+//
+//    for (InsertionPositionDetail n : vectorSCStart)
+//    {
+//        if (n.getLongMapping() < 15)
+//        {
+//            continue;
+//        }
+//
+//        bool added;
+//
+//        std::vector<CountRefineSeq> mergeStart;
+//        mergeStart = mergeString(n, false);
+//
+//
+//
+//        for (InsertionPositionDetail m : vectorSCEnd)
+//        {
+//
+//            if (checkBetween(n.getPosition(), m.getPosition(),-50, 50))
+//            {
+//                BreakpointPosition tempBP;
+//                tempBP.pos = n.getPosition();
+//                tempBP.end = m.getPosition();
+//
+//                tempBP.frequency = n.getFrequency() + m.getFrequency();
+//                tempBP.longmapstart = n.getLongMapping();
+//                tempBP.longmapend = m.getLongMapping();
+//
+//                if (tempBP.frequency <= 4)
+//                {
+//                    continue;
+//                }
+//
+//                added = true;
+//                vectorBP.push_back(tempBP);
+//            }
+//
+//        }
+//    }
+}
+
 void RefiningInsertion::findBreakpoint()
 {
 
@@ -285,6 +367,8 @@ void RefiningInsertion::findBreakpoint()
         // {
         mergeStart = mergeString(n, false);
         // }
+
+
 
         for (InsertionPositionDetail m : vectorSCEnd)
         {

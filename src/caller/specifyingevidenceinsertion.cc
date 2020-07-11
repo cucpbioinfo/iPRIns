@@ -62,8 +62,14 @@ void SpecifyingEvidenceInsertion::updateRead()
             return;
         }
 
-        // if (diff < samplestat->getAverageSampleStat() - int32_t(1.654 * double(samplestat->getSDSampleStat())))
-        if (diff < samplestat->getAverageSampleStat() - (2 * samplestat->getSDSampleStat()))
+//        if (readparser.getMapQuality()<10) {
+//            return;
+//        }
+
+        if (diff < samplestat->getAverageSampleStat() - int32_t(1 * double(samplestat->getSDSampleStat())) - int32_t(1.5 * double(readparser.getLengthSequence())))
+
+//            if (diff < samplestat->getAverageSampleStat() - int32_t(1.9 * double(samplestat->getSDSampleStat())))
+//        if (diff < samplestat->getAverageSampleStat() - (2 * samplestat->getSDSampleStat()))
         {
             checkRange();
         }
@@ -156,7 +162,7 @@ bool SpecifyingEvidenceInsertion::incrementSVFreq(int32_t overlappedpos, int32_t
 void SpecifyingEvidenceInsertion::checkRange()
 {
     bool added = false;
-    int32_t merge = int32_t(samplestat->getAverageSampleStat()) + int32_t(samplestat->getSDSampleStat() * 3);
+    int32_t merge = int32_t(samplestat->getAverageSampleStat()) + int32_t(samplestat->getSDSampleStat() * 1);
     // if (readparser.isMateUnmapped()) && readparser.isSecondRead())
     // {
     //     int32_t merge = int32_t(samplestat->getAverageSampleStat()) + int32_t(samplestat->getSDSampleStat() * 3);
@@ -200,7 +206,7 @@ void SpecifyingEvidenceInsertion::checkRange()
 
 void SpecifyingEvidenceInsertion::proveEvidence(int index)
 {
-    int32_t plus = samplestat->getAverageSampleStat() + (3*samplestat->getSDSampleStat()) + samplestat->getReadLength();
+    int32_t plus = samplestat->getAverageSampleStat() + (1*samplestat->getSDSampleStat()) + samplestat->getReadLength();
     if (currentPos - plus > preCollectSV.at(index).getPosDiscordantRead())
     {
         if (filterEvidence(&preCollectSV.at(index)))
@@ -268,7 +274,7 @@ void SpecifyingEvidenceInsertion::calculateVCF(Evidence *evidence)
 bool SpecifyingEvidenceInsertion::filterEvidence(Evidence *evidence)
 {
 
-    if (evidence->getFrequency() <= 2)
+    if (evidence->getFrequency() <= 1)
     {
         return false;
     }

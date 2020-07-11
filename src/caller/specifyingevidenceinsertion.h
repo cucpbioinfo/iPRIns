@@ -14,7 +14,6 @@ private:
   void checkProveEvidence();
   bool filterEvidence(Evidence *evidence);
   void calculateVCF(Evidence *evidence);
-protected:
 
 public:
   SpecifyingEvidenceInsertion();

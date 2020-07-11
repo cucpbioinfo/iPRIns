@@ -83,21 +83,21 @@ bool ReadDepthAnalysis::filterInsertion(Evidence e)
     }
     else
     {
-        if (e.getFrequency() <= 3)
-        {
-            return false;
-        }
+//        if (e.getFrequency() <= 1)
+//        {
+//            return false;
+//        }
 
-        if (e.getMaxMapQ() < 10)
-        {
-            return false;
-        }
+//        if (e.getMaxMapQ() < 10)
+//        {
+//            return false;
+//        }
     }
 
-    if (sumStartSCL <= 3 && sumStartSCF <= 3)
-    {
-        return false;
-    }
+//    if (sumStartSCL <= 3 && sumStartSCF <= 3)
+//    {
+//        return false;
+//    }
 
     return true;
 }
